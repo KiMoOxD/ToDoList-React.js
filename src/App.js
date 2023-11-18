@@ -1,23 +1,37 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react';
+import Task from "./Compos/Task"
 
 function App() {
+  let [tasks, setTasks] = React.useState([])
+  let taskList = tasks.map((el, index) => {
+    
+    return <Task key={index} name={el} id={index} tasks={tasks} setTasks={setTasks}/>
+  })
+
+  let [taskTitle, setTaskTitle] = React.useState('')
+
+  function handleChange(e) { 
+    console.log(e.target.value)
+    setTaskTitle(e.target.value)
+   }
+
+  function handleClick(e) { 
+    let newarr = tasks;
+    newarr.push(taskTitle);
+    setTasks([...newarr])
+    setTaskTitle('');
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className='tasks' >
+        <div>
+          <input type='text' onChange={handleChange} value={taskTitle}></input>
+          <button onClick={handleClick}>Add Task</button>
+        </div>
+        {tasks.length >= 1 ? taskList :  <div className='noTasks'>You've No Tasks to do...</div>}
+      </div>
     </div>
   );
 }
